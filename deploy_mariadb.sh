@@ -83,7 +83,7 @@ export MARIADB_IMAGE="$mariadb_image"
 # Apply the Kubernetes configurations using the substituted templates.
 envsubst < k8s/secret.yaml.template | kubectl apply -f -
 envsubst < k8s/persistent-volume-claim.yaml.template | kubectl apply -f -
-kubectl apply -f k8s/deployment.yaml
+envsubst < k8s/deployment.yaml.template | kubectl apply -f -
 kubectl apply -f k8s/service.yaml
 
 # Verify the deployment by listing the pods and services in the current namespace.
