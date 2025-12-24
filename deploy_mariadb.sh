@@ -55,7 +55,11 @@ while [ -z "$app_pass" ]; do
   fi
 done
 
-# Prompt the user for the Persistent Volume Claim (PVC) size, defaulting to '5Gi' if not specified.
+# Prompt the user for the MariaDB image version, defaulting to 'mariadb:11.8' if not specified.
+read -p "Enter MariaDB image version (default is 'mariadb:11.8'): " mariadb_image
+if [ -z "$mariadb_image" ]; then
+  mariadb_image="mariadb:11.8"
+fi
 read -p "Enter PVC size for MariaDB (default is '5Gi'): " pvc_size
 if [ -z "$pvc_size" ]; then
   pvc_size="5Gi"
@@ -74,6 +78,7 @@ export APP_USER_B64="$app_user_b64"
 export APP_DB_B64="$app_db_b64"
 export APP_PASS_B64="$app_pass_b64"
 export PVC_SIZE="$pvc_size"
+export MARIADB_IMAGE="$mariadb_image"
 
 # Apply the Kubernetes configurations using the substituted templates.
 envsubst < k8s/secret.yaml.template | kubectl apply -f -
